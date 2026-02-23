@@ -33,6 +33,11 @@ class AppStyles {
     color: AppColors.yellowColor,
     fontWeight: FontWeight.w400,
   );
+  static final TextStyle font14MediumBlackColor = TextStyle(
+    fontSize: 14.sp,
+    color: AppColors.blackColor,
+    fontWeight: FontWeight.w500,
+  );
   static final TextStyle font14RegularWhiteColor = TextStyle(
     fontSize: 14.sp,
     color: Colors.white,

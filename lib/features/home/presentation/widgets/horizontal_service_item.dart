@@ -8,6 +8,7 @@ class HorizontalServiceItem extends StatelessWidget {
   final String subtitle;
   final IconData icon;
   final List<Color>? color;
+  final VoidCallback onTap;
 
   const HorizontalServiceItem({
     super.key,
@@ -15,30 +16,34 @@ class HorizontalServiceItem extends StatelessWidget {
     required this.subtitle,
     required this.icon,
     this.color,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-      ),
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Row(
-          children: [
-            GradientIconContainer(gradientColor: color, icon: icon),
-            SizedBox(width: 16.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(title, style: AppStyles.font18MediumBlackColor),
-                Text(subtitle, style: AppStyles.font12RegularGreyColor),
-              ],
-            ),
-          ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(20.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20.r),
+        ),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Row(
+            children: [
+              GradientIconContainer(gradientColor: color, icon: icon),
+              SizedBox(width: 16.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(title, style: AppStyles.font18MediumBlackColor),
+                  Text(subtitle, style: AppStyles.font12RegularGreyColor),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

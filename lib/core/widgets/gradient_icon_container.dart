@@ -16,6 +16,8 @@ class GradientIconContainer extends StatelessWidget {
     this.radius,
     this.shadowColor,
     this.iconSize,
+    this.iconColor,
+    this.textStyle,
   });
 
   final List<Color>? gradientColor;
@@ -28,6 +30,8 @@ class GradientIconContainer extends StatelessWidget {
   final double? radius;
   final Color? shadowColor;
   final double? iconSize;
+  final Color? iconColor;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +61,9 @@ class GradientIconContainer extends StatelessWidget {
       ),
       child: isText
           ? Center(
-              child: Text(text ?? '', style: AppStyles.font16RegularWhiteColor),
+              child: Text(text ?? '', style: textStyle ?? AppStyles.font16RegularWhiteColor),
             )
-          : Icon(icon, color: Colors.white, size: iconSize ?? 24.sp),
+          : Icon(icon, color: iconColor ?? Colors.white, size: iconSize ?? 24.sp),
     );
   }
 }

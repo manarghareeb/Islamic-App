@@ -11,10 +11,11 @@ class CustomButtonWidget extends StatelessWidget {
     this.width,
     this.backgroundColor,
     this.bordercolor,
-    this.textColor,
+    this.iconColor,
     this.icon,
     this.textStyle,
     this.height,
+    this.shadowColor,
   });
 
   final String title;
@@ -22,10 +23,11 @@ class CustomButtonWidget extends StatelessWidget {
   final double? width;
   final Color? backgroundColor;
   final Color? bordercolor;
-  final Color? textColor;
+  final Color? iconColor;
   final IconData? icon;
   final TextStyle? textStyle;
   final double? height;
+  final Color? shadowColor;
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +38,21 @@ class CustomButtonWidget extends StatelessWidget {
         border: Border.all(color: bordercolor ?? AppColors.primaryColor),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.25),
+            color: shadowColor ?? Colors.black.withOpacity(0.25),
             blurRadius: 4,
             offset: const Offset(0, 0),
           ),
         ],
-        gradient: LinearGradient(
-          colors: <Color>[
-            AppColors.primaryColor,
-            AppColors.primaryColor,
-            AppColors.darkPrimaryColor,
-          ],
-          tileMode: TileMode.mirror,
-        ),
+        gradient: backgroundColor != null
+            ? null
+            : LinearGradient(
+                colors: <Color>[
+                  AppColors.primaryColor,
+                  AppColors.primaryColor,
+                  AppColors.darkPrimaryColor,
+                ],
+                tileMode: TileMode.mirror,
+              ),
       ),
       width: width ?? double.infinity,
       height: height ?? 56.h,
@@ -58,7 +62,7 @@ class CustomButtonWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null)
-              Icon(icon, color: textColor ?? Colors.white, size: 20.sp),
+              Icon(icon, color: iconColor ?? Colors.white, size: 20.sp),
             SizedBox(width: (icon != null) ? 10 : 0),
             Text(title, style: textStyle ?? AppStyles.font16RegularWhiteColor),
           ],

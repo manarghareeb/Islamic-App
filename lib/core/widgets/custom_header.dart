@@ -1,16 +1,30 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:islamic_app/core/theme/colors.dart';
 import 'package:islamic_app/core/theme/styles.dart';
-import 'package:islamic_app/features/home/presentation/widgets/prayer_times_card.dart';
 
-class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
+class CustomHeader extends StatelessWidget {
+  const CustomHeader({
+    super.key,
+    required this.mediaHeight,
+    required this.title,
+    required this.subTitle,
+    required this.widget,
+    this.isHome = false,
+    this.isAthkar = false,
+  });
+  final double mediaHeight;
+  final String title;
+  final String subTitle;
+  final Widget widget;
+  final bool isHome;
+  final bool isAthkar;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * mediaHeight,
       width: double.infinity,
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -62,41 +76,64 @@ class HeaderSection extends StatelessWidget {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.settings_outlined,
+                    if (isAthkar == true || isHome == false)
+                      IconButton(
+                        onPressed: () => context.pop(),
+                        icon: Icon(
+                          Icons.arrow_back,
                           color: Colors.white,
-                          size: 24.sp,
+                          size: 20.sp,
                         ),
-                        SizedBox(width: 15.w),
-                        Icon(
-                          Icons.dark_mode_outlined,
-                          color: Colors.white,
-                          size: 24.sp,
-                        ),
-                      ],
-                    ),
+                      ),
+                    SizedBox(width: 16.w),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'المصحف الشريف',
-                          style: AppStyles.font30MediumWhiteColor,
+                          title,
+                          style: AppStyles.font24MediumBlackColor.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                         Text(
-                          'السلام عليكم ورحمة الله',
+                          subTitle,
                           style: AppStyles.font14RegularWhiteColor,
                         ),
                       ],
                     ),
+                    const Spacer(),
+                    if (isAthkar == true)
+                      CircleAvatar(
+                        backgroundColor: Colors.white24,
+                        child: Text("🙌"),
+                      )
+                    else ...[
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.settings_outlined,
+                              color: Colors.white,
+                              size: 24.sp,
+                            ),
+                          ),
+                          if (isHome == true) SizedBox(width: 15.w),
+                          if (isHome == true)
+                            Icon(
+                              Icons.dark_mode_outlined,
+                              color: Colors.white,
+                              size: 24.sp,
+                            ),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
                 SizedBox(height: 24.h),
-                const PrayerTimesCard(),
+                widget,
               ],
             ),
           ),
@@ -105,4 +142,3 @@ class HeaderSection extends StatelessWidget {
     );
   }
 }
-*/

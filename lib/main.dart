@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:islamic_app/core/cache/cache_helper.dart';
 import 'package:islamic_app/core/di/service_locator.dart';
 import 'package:islamic_app/core/routing/app_router.dart';
+import 'package:islamic_app/features/reminders/data/models/reminder_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ReminderModelAdapter());
+  final remindersBox = await Hive.openBox<ReminderModel>('reminders');
+  sl.registerLazySingleton(() => remindersBox);
   await CacheHelper.init();
   initServiceLocator();
   runApp(const MyApp());

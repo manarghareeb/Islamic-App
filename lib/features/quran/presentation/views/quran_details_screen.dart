@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:islamic_app/core/theme/colors.dart';
-import 'package:islamic_app/core/theme/styles.dart';
+import 'package:islamic_app/core/widgets/custom_app_bar.dart';
 import 'package:islamic_app/core/widgets/gradient_icon_container.dart';
 import 'package:islamic_app/features/quran/domain/entities/quran_entity.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/ayah_cubit/ayah_cubit.dart';
@@ -19,27 +18,8 @@ class QuranDetailsScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: AppColors.whiteBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: AppColors.primaryColor,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () => GoRouter.of(context).pop(),
-            icon: Icon(Icons.arrow_back, color: Colors.white, size: 20.sp),
-          ),
-          title: Column(
-            children: [
-              Text(
-                initialQuranData.name,
-                style: AppStyles.font24MediumBlackColor.copyWith(
-                  color: Colors.white,
-                ),
-              ),
-              Text(
-                '${initialQuranData.revelationType == 'Meccan' ? 'مكية' : 'مدنية'} - ${initialQuranData.numberOfAyahs} آية',
-                style: AppStyles.font14RegularWhiteColor,
-              ),
-            ],
-          ),
+        appBar: CustomAppBar(
+          title: initialQuranData.name,
           actions: [
             IconButton(
               icon: const Icon(Icons.volume_up),
@@ -54,6 +34,8 @@ class QuranDetailsScreen extends StatelessWidget {
               iconSize: 20.sp,
             ),
           ],
+          subTitle:
+              '${initialQuranData.revelationType == 'Meccan' ? 'مكية' : 'مدنية'} - ${initialQuranData.numberOfAyahs} آية',
         ),
         body: Column(
           children: [

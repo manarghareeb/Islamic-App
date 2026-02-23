@@ -1,17 +1,23 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:islamic_app/core/di/service_locator.dart';
+import 'package:islamic_app/features/adhkar/presentation/views/athkar_details_screen.dart';
+import 'package:islamic_app/features/adhkar/presentation/views/athkar_screen.dart';
 import 'package:islamic_app/features/home/presentation/views/home_screen.dart';
 import 'package:islamic_app/features/onboarding/presentation/views/onboarding_screen.dart';
 import 'package:islamic_app/features/onboarding/presentation/views/splash_screen.dart';
+import 'package:islamic_app/features/prayer_times/presentation/views/payer_times_screen.dart';
 import 'package:islamic_app/features/quran/domain/entities/quran_entity.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/ayah_cubit/ayah_cubit.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/quran_cubit/quran_cubit.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/random_ayah_cubit/random_ayah_cubit.dart';
 import 'package:islamic_app/features/quran/presentation/views/quran_details_screen.dart';
 import 'package:islamic_app/features/quran/presentation/views/quran_screen.dart';
+import 'package:islamic_app/features/reminders/presentation/cubit/reminders_cubit.dart';
+import 'package:islamic_app/features/reminders/presentation/views/reminders_screen.dart';
 import 'package:islamic_app/features/settings/presentation/views/language_selection_screen.dart';
 import 'package:islamic_app/features/settings/presentation/views/location_permission_screen.dart';
+import 'package:islamic_app/features/tasbih/presentation/views/tasbih_screen.dart';
 
 abstract class AppRouter {
   static const String onboardingScreen = '/onboardingScreen';
@@ -21,6 +27,11 @@ abstract class AppRouter {
   static const String quranDetailsScreen = '/quranDetailsScreen';
   static const String languageSelectionScreen = '/languageSelectionScreen';
   static const String locationPermissionScreen = '/locationPermissionScreen';
+  static const String payerTimesScreen = '/payerTimesScreen';
+  static const String athkarScreen = '/athkarScreen';
+  static const String athkarDetailsScreen = '/athkarDetailsScreen';
+  static const String remindersScreen = '/remindersScreen';
+  static const String tasbihScreen = '/tasbihScreen';
 
   static final route = GoRouter(
     initialLocation: splashScreen,
@@ -65,6 +76,29 @@ abstract class AppRouter {
       GoRoute(
         path: languageSelectionScreen,
         builder: (context, state) => const LanguageSelectionScreen(),
+      ),
+      GoRoute(
+        path: payerTimesScreen,
+        builder: (context, state) => const PayerTimesScreen(),
+      ),
+      GoRoute(
+        path: athkarScreen,
+        builder: (context, state) => const AthkarScreen(),
+      ),
+      GoRoute(
+        path: athkarDetailsScreen,
+        builder: (context, state) => const AthkarDetailsScreen(),
+      ),
+      GoRoute(
+        path: remindersScreen,
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<RemindersCubit>()..loadReminders(),
+          child: const RemindersScreen(),
+        ),
+      ),
+      GoRoute(
+        path: tasbihScreen,
+        builder: (context, state) => const TasbihScreen(),
       ),
     ],
   );
