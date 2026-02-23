@@ -8,8 +8,16 @@ import 'package:islamic_app/core/widgets/gradient_icon_container.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/random_ayah_cubit/random_ayah_cubit.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/random_ayah_cubit/random_ayah_state.dart';
 
-class AyahOfTheDayCard extends StatelessWidget {
-  const AyahOfTheDayCard({super.key});
+class CustomGradientCard extends StatelessWidget {
+  const CustomGradientCard({
+    super.key,
+    required this.title,
+    this.text,
+    this.referance,
+  });
+  final String title;
+  final String? text;
+  final String? referance;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +25,6 @@ class AyahOfTheDayCard extends StatelessWidget {
       children: [
         Container(
           width: double.infinity,
-          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
           padding: EdgeInsets.all(25.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
@@ -27,17 +34,8 @@ class AyahOfTheDayCard extends StatelessWidget {
               tileMode: TileMode.mirror,
             ),
           ),
-          child: BlocBuilder<RandomAyahCubit, RandomAyahState>(
-            builder: (context, state) {
-              if (state is RandomAyahLoading) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.yellowColor,
-                  ),
-                );
-              } else if (state is RandomAyahSuccess) {
-                final ayah = state.ayah;
-                return Column(
+          child: text != null
+              ? Column(
                   children: [
                     GradientIconContainer(
                       width: 40.w,
@@ -50,49 +48,82 @@ class AyahOfTheDayCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 16.h),
-                    Text('آية اليوم', style: AppStyles.font12RegularGreyColor),
+                    Text(title, style: AppStyles.font12RegularGreyColor),
                     SizedBox(height: 16.h),
                     const CustomDividerWithShadow(),
                     SizedBox(height: 16.h),
                     Text(
-                      '﴾ ${ayah.text} ﴿',
+                      text!,
                       textAlign: TextAlign.center,
-                      style: AppStyles.font24MediumBlackColor,
+                      style: AppStyles.font24MediumBlackColor.copyWith(
+                        fontSize: 20.sp,
+                      ),
                     ),
                     SizedBox(height: 16.h),
                     const CustomDividerWithShadow(),
                     SizedBox(height: 16.h),
                     Text(
-                      '${ayah.surahName} - آية ${ayah.numberInSurah}',
+                      referance ?? "",
                       style: AppStyles.font14RegularWhiteColor.copyWith(
                         color: AppColors.greyColor,
                       ),
                     ),
                   ],
-                );
-              } else if (state is RandomAyahError) {
-                /*return Center(
-                  child: Text(
-                    'تعذر تحميل الآية، اسحب للتحديث',
-                    style: AppStyles.font12RegularGreyColor,
-                  ),
-                );*/
-                return Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.w),
-                    child: Text(
-                      'Error: ${state.message}',
-                      textAlign: TextAlign.center,
-                      style: AppStyles.font12RegularGreyColor.copyWith(
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                );
-              }
-              return const SizedBox();
-            },
-          ),
+                )
+              : BlocBuilder<RandomAyahCubit, RandomAyahState>(
+                  builder: (context, state) {
+                    if (state is RandomAyahLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.yellowColor,
+                        ),
+                      );
+                    } else if (state is RandomAyahSuccess) {
+                      final ayah = state.ayah;
+                      return Column(
+                        children: [
+                          GradientIconContainer(
+                            width: 40.w,
+                            height: 40.h,
+                            iconSize: 20.sp,
+                            icon: Icons.star,
+                            gradientColor: [
+                              AppColors.yellowColor,
+                              AppColors.yellowColor,
+                            ],
+                          ),
+                          SizedBox(height: 16.h),
+                          Text(title, style: AppStyles.font12RegularGreyColor),
+                          SizedBox(height: 16.h),
+                          const CustomDividerWithShadow(),
+                          SizedBox(height: 16.h),
+                          Text(
+                            '﴾ ${ayah.text} ﴿',
+                            textAlign: TextAlign.center,
+                            style: AppStyles.font24MediumBlackColor,
+                          ),
+                          SizedBox(height: 16.h),
+                          const CustomDividerWithShadow(),
+                          SizedBox(height: 16.h),
+                          Text(
+                            '${ayah.surahName} - آية ${ayah.numberInSurah}',
+                            style: AppStyles.font14RegularWhiteColor.copyWith(
+                              color: AppColors.greyColor,
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (state is RandomAyahError) {
+                      return Center(
+                        child: Text(
+                          'تعذر تحميل الآية، اسحب للتحديث',
+                          style: AppStyles.font12RegularGreyColor,
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
         ),
         Positioned(
           right: MediaQuery.of(context).size.width * 0.05,

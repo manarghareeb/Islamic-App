@@ -29,22 +29,6 @@ class PageViewBody extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 30.w),
             child: Column(
               children: [
-                /*Container(
-                  width: 100.w,
-                  height: 100.w,
-                  decoration: BoxDecoration(
-                    color: page['color'],
-                    borderRadius: BorderRadius.circular(20.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: (page['color'] as Color).withOpacity(0.4),
-                        blurRadius: 30,
-                        offset: const Offset(0, 15),
-                      ),
-                    ],
-                  ),
-                  child: Icon(page['icon'], color: Colors.white, size: 45.sp),
-                ),*/
                 GradientIconContainer(
                   gradientColor: page['gradientColor'],
                   width: 100.w,
