@@ -1,4 +1,5 @@
 import 'package:islamic_app/features/quran/data/models/ayah_model.dart';
+import 'package:islamic_app/features/quran/domain/entities/ayah_entity.dart';
 import 'package:islamic_app/features/quran/domain/entities/quran_entity.dart';
 
 class QuranModel extends QuranEntity {
@@ -21,6 +22,24 @@ class QuranModel extends QuranEntity {
       ayahs: json['ayahs'] != null
           ? (json['ayahs'] as List).map((e) => AyahModel.fromJson(e)).toList()
           : null,
+    );
+  }
+
+  QuranModel copyWith({
+    int? number,
+    String? name,
+    String? englishName,
+    int? numberOfAyahs,
+    String? revelationType,
+    List<AyahEntity>? ayahs, 
+  }) {
+    return QuranModel(
+      number: number ?? this.number,
+      name: name ?? this.name,
+      englishName: englishName ?? this.englishName,
+      numberOfAyahs: numberOfAyahs ?? this.numberOfAyahs,
+      revelationType: revelationType ?? this.revelationType,
+      ayahs: ayahs ?? this.ayahs,
     );
   }
 }

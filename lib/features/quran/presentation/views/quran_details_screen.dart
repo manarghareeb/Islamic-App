@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamic_app/core/theme/colors.dart';
 import 'package:islamic_app/core/widgets/custom_app_bar.dart';
-import 'package:islamic_app/core/widgets/gradient_icon_container.dart';
 import 'package:islamic_app/features/quran/domain/entities/quran_entity.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/ayah_cubit/ayah_cubit.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/ayah_cubit/ayah_state.dart';
@@ -39,20 +38,6 @@ class QuranDetailsScreen extends StatelessWidget {
         ),
         body: Column(
           children: [
-            /*Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Icon(Icons.zoom_in),
-                        Text('20px', style: TextStyle(fontSize: 14.sp)),
-                        const Icon(Icons.zoom_out),
-                        const VerticalDivider(),
-                        const Text('العربية'),
-                      ],
-                    ),
-                  ),*/
             BlocBuilder<AyahCubit, AyahState>(
               builder: (context, state) {
                 if (state is AyahLoading) {
@@ -63,55 +48,97 @@ class QuranDetailsScreen extends StatelessWidget {
                   );
                 } else if (state is AyahSuccess) {
                   final ayahs = state.quranData.ayahs ?? [];
+                  const String basmalah =
+                      "بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ";
                   return Expanded(
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(
-                        left: 20.w,
-                        right: 20.w,
-                        top: 20.h,
-                        bottom: 32.h,
-                      ),
-                      itemCount: ayahs.length,
-                      itemBuilder: (context, index) {
-                        final ayah = ayahs[index];
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 15.h),
-                          padding: EdgeInsets.all(20.w),
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Padding(
+                        padding: EdgeInsets.all(16.w),
+                        child: Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.all(16.w),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20.r),
-                            border: Border.all(
-                              color: AppColors.primaryColor.withOpacity(0.06),
-                              width: 1,
-                            ),
+                            color: const Color(0xFFFFFBEA),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                          child: Column(
                             children: [
-                              //SizedBox(width: 10.w),
-                              Expanded(
-                                child: Text(
-                                  ayah.text,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'Amiri',
+                              if (initialQuranData.number != 9)
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: 25.h,
+                                    top: 10.h,
+                                  ),
+                                  child: Text(
+                                    basmalah,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 26.sp,
+                                      fontFamily: 'Amiri',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 15.w),
-                              GradientIconContainer(
-                                width: 40.w,
-                                height: 40.h,
-                                isText: true,
-                                text: '${ayah.numberInSurah}',
+                              Text.rich(
+                                textAlign: TextAlign.justify,
+                                textDirection: TextDirection.rtl,
+                                TextSpan(
+                                  children: [
+                                    for (var i = 0; i < ayahs.length; i++) ...[
+                                      TextSpan(
+                                        text:
+                                            (i == 0 &&
+                                                initialQuranData.number != 1)
+                                            ? "${ayahs[i].text.replaceFirst(basmalah, "").trim()} "
+                                            : "${ayahs[i].text} ",
+                                        style: TextStyle(
+                                          fontSize: 24.sp,
+                                          height: 2.2,
+                                          fontFamily: 'Amiri',
+                                          color: Colors.black.withOpacity(0.8),
+                                        ),
+                                      ),
+                                      WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
+                                        child: Container(
+                                          margin: EdgeInsets.symmetric(
+                                            horizontal: 4.w,
+                                          ),
+                                          width: 32.w,
+                                          height: 32.w,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.grey.withOpacity(
+                                              0.15,
+                                            ),
+                                            border: Border.all(
+                                              color: const Color(0xFFB59410),
+                                              width: 0.8,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              '${ayahs[i].numberInSurah}',
+                                              style: TextStyle(
+                                                fontSize: 11.sp,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'sans-serif',
+                                                color: const Color(0xFFB59410),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                   );
                 } else if (state is AyahError) {
@@ -121,37 +148,6 @@ class QuranDetailsScreen extends StatelessWidget {
                 return const SizedBox();
               },
             ),
-            /*Padding(
-                    padding: EdgeInsets.all(15.w),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF0C724C),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: const Text('السورة التالية'),
-                          ),
-                        ),
-                        SizedBox(width: 10.w),
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            child: const Text('السورة السابقة'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),*/
           ],
         ),
       ),

@@ -32,7 +32,17 @@ class QuranRemoteDataSourceImpl implements QuranRemoteDataSource {
       final response = await apiConsumer.get('${EndPoint.quranBaseUrl}${EndPoint.quran}/$quranNumber');
 
       if (response['data'] != null) {
-        return QuranModel.fromJson(response['data']);
+        var model = QuranModel.fromJson(response['data']);
+
+        if (model.ayahs != null) {
+          final cleanedAyahs = model.ayahs!.map((ayah) {
+            return ayah.copyWith(
+              text: ayah.text.replaceAll('\n', ' ').trim(),
+            );
+          }).toList();
+          return model.copyWith(ayahs: cleanedAyahs);
+        }
+        return model;
       } else {
         throw ServerException(
           errModel: ErrorModel(errorMessage: "Data not found", status: 404),

@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:islamic_app/core/di/service_locator.dart';
+import 'package:islamic_app/features/adhkar/domain/entities/adhkar_category_entity.dart';
+import 'package:islamic_app/features/adhkar/presentation/cubit/adhkar_cubit.dart';
 import 'package:islamic_app/features/adhkar/presentation/views/athkar_details_screen.dart';
 import 'package:islamic_app/features/adhkar/presentation/views/athkar_screen.dart';
 import 'package:islamic_app/features/home/presentation/views/home_screen.dart';
@@ -83,11 +85,17 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: athkarScreen,
-        builder: (context, state) => const AthkarScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<AdhkarCubit>()..fetchAllAdhkar(),
+          child: const AthkarScreen(),
+        ),
       ),
       GoRoute(
         path: athkarDetailsScreen,
-        builder: (context, state) => const AthkarDetailsScreen(),
+        builder: (context, state) {
+          final category = state.extra as AdhkarCategoryEntity;
+          return AthkarDetailsScreen(category: category);
+        },
       ),
       GoRoute(
         path: remindersScreen,
