@@ -8,6 +8,11 @@ import 'package:islamic_app/features/adhkar/data/repositories/adhkar_repository_
 import 'package:islamic_app/features/adhkar/domain/repositories/adhkar_repository.dart';
 import 'package:islamic_app/features/adhkar/domain/usecases/get_adhkar_use_case.dart';
 import 'package:islamic_app/features/adhkar/presentation/cubit/adhkar_cubit.dart';
+import 'package:islamic_app/features/prayer_times/data/data_sources/prayer_remote_data_source.dart';
+import 'package:islamic_app/features/prayer_times/data/repositories/payer_repository_impl.dart';
+import 'package:islamic_app/features/prayer_times/domain/repositories/payer_repository.dart';
+import 'package:islamic_app/features/prayer_times/domain/usecases/get_prayer_times_usecase.dart';
+import 'package:islamic_app/features/prayer_times/presentation/cubit/prayer_cubit.dart';
 import 'package:islamic_app/features/quran/data/data_sources/quran_remote_data_source.dart';
 import 'package:islamic_app/features/quran/data/repositories/quran_repository_impl.dart';
 import 'package:islamic_app/features/quran/domain/repositories/quran_repository.dart';
@@ -42,6 +47,9 @@ void initServiceLocator() {
   sl.registerLazySingleton<AdhkarLocalDataSource>(
     () => AdhkarLocalDataSourceImpl(),
   );
+  sl.registerLazySingleton<PrayerRemoteDataSource>(
+    () => PrayerRemoteDataSourceImpl(apiConsumer: sl()),
+  );
   
   /// Repositories
   sl.registerLazySingleton<QuranRepository>(
@@ -53,7 +61,9 @@ void initServiceLocator() {
   sl.registerLazySingleton<AdhkarRepository>(
     () => AdhkarRepositoryImpl(localDataSource: sl()),
   );
-
+  sl.registerLazySingleton<PrayerRepository>(
+    () => PrayerRepositoryImpl(remoteDataSource: sl()),
+  );
 
   /// UseCases
   sl.registerLazySingleton(() => GetQuransUseCase(repository: sl()));
@@ -62,6 +72,7 @@ void initServiceLocator() {
   sl.registerLazySingleton(() => AddReminderUseCase(repository: sl())); 
   sl.registerLazySingleton(() => UpdateReminderUseCase(repository: sl())); 
   sl.registerLazySingleton(() => GetAdhkarUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetPrayerTimesUseCase(repository: sl()));
 
   /// Cubits
   sl.registerFactory(() => QuranCubit(getQuransUseCase: sl()));
@@ -73,4 +84,5 @@ void initServiceLocator() {
     repository: sl())
   );
   sl.registerFactory(() => AdhkarCubit(getAdhkarUseCase: sl()));
+  sl.registerFactory(() => PrayerCubit(getPrayerTimesUseCase: sl()));
 }

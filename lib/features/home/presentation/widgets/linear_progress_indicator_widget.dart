@@ -4,8 +4,9 @@ import 'package:islamic_app/core/theme/colors.dart';
 
 class LinearProgressIndicatorWidget extends StatelessWidget {
   const LinearProgressIndicatorWidget({
-    super.key,
+    super.key, required this.progressValue,
   });
+  final double progressValue;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,9 @@ class LinearProgressIndicatorWidget extends StatelessWidget {
           ),
           LayoutBuilder(
             builder: (context, constraints) {
-              return Container(
-                width: constraints.maxWidth * 0.6,
+              return AnimatedContainer( 
+                duration: const Duration(milliseconds: 500),
+                width: constraints.maxWidth * progressValue, 
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   gradient: LinearGradient(
