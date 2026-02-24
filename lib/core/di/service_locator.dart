@@ -3,6 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 import 'package:islamic_app/core/api/api_consumer.dart';
 import 'package:islamic_app/core/api/dio_consumer.dart';
+import 'package:islamic_app/features/adhkar/data/data_sources/adhkar_local_data_source.dart';
+import 'package:islamic_app/features/adhkar/data/repositories/adhkar_repository_impl.dart';
+import 'package:islamic_app/features/adhkar/domain/repositories/adhkar_repository.dart';
+import 'package:islamic_app/features/adhkar/domain/usecases/get_adhkar_use_case.dart';
+import 'package:islamic_app/features/adhkar/presentation/cubit/adhkar_cubit.dart';
 import 'package:islamic_app/features/quran/data/data_sources/quran_remote_data_source.dart';
 import 'package:islamic_app/features/quran/data/repositories/quran_repository_impl.dart';
 import 'package:islamic_app/features/quran/domain/repositories/quran_repository.dart';
@@ -34,6 +39,9 @@ void initServiceLocator() {
   sl.registerLazySingleton<RemindersLocalDataSource>(
     () => RemindersLocalDataSourceImpl(sl<Box<ReminderModel>>()),
   );
+  sl.registerLazySingleton<AdhkarLocalDataSource>(
+    () => AdhkarLocalDataSourceImpl(),
+  );
   
   /// Repositories
   sl.registerLazySingleton<QuranRepository>(
@@ -42,6 +50,10 @@ void initServiceLocator() {
   sl.registerLazySingleton<RemindersRepository>(
     () => RemindersRepositoryImpl(localDataSource: sl()),
   );
+  sl.registerLazySingleton<AdhkarRepository>(
+    () => AdhkarRepositoryImpl(localDataSource: sl()),
+  );
+
 
   /// UseCases
   sl.registerLazySingleton(() => GetQuransUseCase(repository: sl()));
@@ -49,6 +61,7 @@ void initServiceLocator() {
   sl.registerLazySingleton(() => GetRandomAyahUseCase(repository: sl()));
   sl.registerLazySingleton(() => AddReminderUseCase(repository: sl())); 
   sl.registerLazySingleton(() => UpdateReminderUseCase(repository: sl())); 
+  sl.registerLazySingleton(() => GetAdhkarUseCase(repository: sl()));
 
   /// Cubits
   sl.registerFactory(() => QuranCubit(getQuransUseCase: sl()));
@@ -59,4 +72,5 @@ void initServiceLocator() {
     updateReminderUseCase: sl(),
     repository: sl())
   );
+  sl.registerFactory(() => AdhkarCubit(getAdhkarUseCase: sl()));
 }

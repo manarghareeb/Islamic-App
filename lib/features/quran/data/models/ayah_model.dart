@@ -13,7 +13,6 @@ class AyahModel extends AyahEntity {
       number: json['number'],
       text: json['text'],
       numberInSurah: json['numberInSurah'],
-      //surahName: json['surah']['name'],
       surahName: json['surah'] != null ? json['surah']['name'] : '',
     );
   }
