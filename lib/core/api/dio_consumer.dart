@@ -33,7 +33,8 @@ class DioConsumer extends ApiConsumer {
     dio.options.validateStatus = (status) {
       return status != null && status < 500;
     };
-    dio.options.followRedirects = false;
+    // edit
+    dio.options.followRedirects = true;
   }
 
   @override

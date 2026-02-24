@@ -8,6 +8,8 @@ import 'package:islamic_app/features/adhkar/presentation/views/athkar_screen.dar
 import 'package:islamic_app/features/home/presentation/views/home_screen.dart';
 import 'package:islamic_app/features/onboarding/presentation/views/onboarding_screen.dart';
 import 'package:islamic_app/features/onboarding/presentation/views/splash_screen.dart';
+import 'package:islamic_app/features/prayer_times/domain/entities/prayer_time_entity.dart';
+import 'package:islamic_app/features/prayer_times/presentation/cubit/prayer_cubit.dart';
 import 'package:islamic_app/features/prayer_times/presentation/views/payer_times_screen.dart';
 import 'package:islamic_app/features/quran/domain/entities/quran_entity.dart';
 import 'package:islamic_app/features/quran/presentation/cubit/ayah_cubit/ayah_cubit.dart';
@@ -48,9 +50,16 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: homeScreen,
-        builder: (context, state) => BlocProvider(
-          create: (context) => sl<RandomAyahCubit>()..fetchRandomAyah(),
-          child: const HomeScreen(),
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<RandomAyahCubit>()..fetchRandomAyah(),
+            ),
+            BlocProvider(
+              create: (context) => sl<PrayerCubit>()..fetchPrayerTimes(),
+            ),
+          ],
+          child: const HomeScreen()
         ),
       ),
       GoRoute(
@@ -81,7 +90,10 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: payerTimesScreen,
-        builder: (context, state) => const PayerTimesScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<PrayerCubit>()..fetchPrayerTimes(),
+          child: PayerTimesScreen(prayerTimes: state.extra as PrayerTimesEntity),
+        ),
       ),
       GoRoute(
         path: athkarScreen,

@@ -58,7 +58,7 @@ class AthkarScreen extends StatelessWidget {
                         crossAxisCount: 2,
                         crossAxisSpacing: 15.w,
                         mainAxisSpacing: 15.h,
-                        childAspectRatio: 1.1,
+                        //childAspectRatio: 1.1,
                       ),
                       itemCount: categories.length,
                       itemBuilder: (context, index) {

@@ -5,7 +5,15 @@ import 'package:islamic_app/core/theme/styles.dart';
 class AddressAndDateCard extends StatelessWidget {
   const AddressAndDateCard({
     super.key,
+    required this.address,
+    required this.weekday,
+    required this.date,
+    required this.hijriDate,
   });
+  final String address;
+  final String weekday;
+  final String date;
+  final String hijriDate;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +34,7 @@ class AddressAndDateCard extends StatelessWidget {
                 size: 15.sp,
               ),
               SizedBox(width: 8.w),
-              Text(
-                'الرياض، المملكة العربية السعودية',
-                style: AppStyles.font14RegularWhiteColor,
-              ),
+              Text(address, style: AppStyles.font14RegularWhiteColor),
             ],
           ),
         ),
@@ -43,13 +48,10 @@ class AddressAndDateCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Text(
-                "الثلاثاء",
-                style: AppStyles.font14RegularWhiteColor,
-              ),
+              Text(weekday, style: AppStyles.font14RegularWhiteColor),
               SizedBox(height: 8.h),
               Text(
-                "21 أكتوبر 2025",
+                date,
                 style: AppStyles.font30MediumWhiteColor.copyWith(
                   fontWeight: FontWeight.w400,
                 ),
@@ -70,7 +72,7 @@ class AddressAndDateCard extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
               Text(
-                "28 ربيع الثاني 1447",
+                hijriDate,
                 style: AppStyles.font16RegularWhiteColor,
               ),
             ],
