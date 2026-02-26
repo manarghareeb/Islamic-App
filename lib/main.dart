@@ -9,19 +9,6 @@ import 'package:islamic_app/core/services/work_manager_service.dart';
 import 'package:islamic_app/features/reminders/data/models/reminder_model.dart';
 import 'package:islamic_app/features/tasbih/data/models/tasbih_model.dart';
 
-/*@pragma('vm:entry-point')
-void callbackDispatcher() {
-  Workmanager().registerPeriodicTask(
-    'periodicTaskId',
-    'periodicTaskName',
-    frequency: const Duration(seconds: 15),
-  );
-  Workmanager().executeTask((task, inputData) async {
-    print("Background task: $task");
-    LocalNotificationsService.showBasicNotification();
-    return Future.value(true);
-  });
-}*/
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -38,12 +25,9 @@ void main() async {
   
   await Future.wait([
     LocalNotificationsService.init(),
-    LocalNotificationsService.requestPermissions(),
+    //LocalNotificationService.requestPermissions(),
     WorkManagerService().initialize(),
   ]);
-  //await LocalNotificationsService.init();
-  //Workmanager().initialize(callbackDispatcher);
-  //Workmanager().registerOneOffTask("task-id", "simpleTask");
   runApp(const MyApp());
 }
 
