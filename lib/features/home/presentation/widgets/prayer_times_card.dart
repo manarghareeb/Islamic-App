@@ -52,7 +52,6 @@ class PrayerTimesCard extends StatelessWidget {
                     ),
                     Text(
                       prayerData == null ? 'جارِ التحميل...' : 'صلاة ${nextPrayer['name']}',
-                      //'صلاة الظهر', 
                       style: AppStyles.font24MediumBlackColor
                     ),
                   ],

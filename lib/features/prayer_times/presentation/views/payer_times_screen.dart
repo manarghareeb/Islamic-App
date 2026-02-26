@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamic_app/core/theme/colors.dart';
 import 'package:islamic_app/core/widgets/custom_header.dart';
 import 'package:islamic_app/features/prayer_times/domain/entities/prayer_time_entity.dart';
@@ -16,61 +17,63 @@ class PayerTimesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteBackgroundColor,
-      body: SingleChildScrollView(
-        child: Directionality(
-          textDirection: TextDirection.rtl,
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: SingleChildScrollView( 
           child: BlocBuilder<PrayerCubit, PrayerState>(
             builder: (context, state) {
-              if (state is PrayerLoading) {
-                print("⏳ Loading prayer times...");
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state is PrayerSuccess) {
-                print("✅ Prayer times loaded successfully");
-                final data = state.prayerData;
-                final prayersList = preparePrayersList(data.timings);
-
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      CustomHeader(
-                        isAthkar: false,
-                        isHome: false,
-                        mediaHeight: 0.55,
-                        title: 'مواقيت الصلاة',
-                        subTitle: 'أوقات دقيقة حسب موقعك',
-                        widget: AddressAndDateCard(
-                          address: "موقعك الحالي",
-                          weekday: data.hijriWeekday,
-                          hijriDate: data.fullHijriDate,
-                          date: data.gregorianDate,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.all(20),
-                          itemCount: prayersList.length,
-                          itemBuilder: (context, index) {
-                            return DymanicPayerTimesCard(
-                              prayer: prayersList[index],
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+              return Column(
+                children: [
+                  CustomHeader(
+                    isAthkar: false,
+                    isHome: false,
+                    mediaHeight: 0.55,
+                    title: 'مواقيت الصلاة',
+                    subTitle: 'أوقات دقيقة حسب موقعك',
+                    widget: state is PrayerLoading
+                        ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                        : state is PrayerSuccess
+                            ? AddressAndDateCard(
+                                address: "موقعك الحالي",
+                                weekday: state.prayerData.hijriWeekday,
+                                hijriDate: state.prayerData.fullHijriDate,
+                                date: state.prayerData.gregorianDate,
+                              )
+                            : const SizedBox(),
                   ),
-                );
-              }
-              if (state is PrayerError) {
-                print("❌ PrayerError State: ${state.message}");
-                return Center(child: Text(state.message));
-              } else {
-                print("⚠️ Unexpected State: ${state.runtimeType}");
-                return const SizedBox();
-              }
+
+                  if (state is PrayerLoading)
+                    Padding(
+                      padding: EdgeInsets.only(top: 50.h),
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
+
+                  if (state is PrayerSuccess)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(20),
+                        itemCount: preparePrayersList(state.prayerData.timings).length,
+                        itemBuilder: (context, index) {
+                          final prayersList = preparePrayersList(state.prayerData.timings);
+                          return DymanicPayerTimesCard(
+                            prayer: prayersList[index],
+                          );
+                        },
+                      ),
+                    ),
+
+                  if (state is PrayerError)
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 50.h),
+                        child: Text(state.message),
+                      ),
+                    ),
+                ],
+              );
             },
           ),
         ),

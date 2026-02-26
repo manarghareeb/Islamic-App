@@ -1,108 +1,89 @@
-/*import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:islamic_app/core/theme/colors.dart';
-import 'package:islamic_app/core/theme/styles.dart';
-import 'package:islamic_app/features/home/presentation/widgets/prayer_times_card.dart';
+import 'dart:async';
 
-class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamic_app/features/home/presentation/widgets/prayer_times_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:islamic_app/core/widgets/custom_header.dart';
+import 'package:islamic_app/features/prayer_times/presentation/cubit/prayer_cubit.dart';
+import 'package:islamic_app/features/prayer_times/presentation/cubit/prayer_state.dart';
+
+class HomeHeader extends StatefulWidget {
+  final bool isHome;
+  final bool isAthkar;
+  final double mediaHeight;
+  final String title;
+  final String subTitle;
+
+  const HomeHeader({
+    super.key,
+    required this.isHome,
+    required this.isAthkar,
+    required this.mediaHeight,
+    required this.title,
+    required this.subTitle,
+  });
+
+  @override
+  State<HomeHeader> createState() => _HomeHeaderState();
+}
+
+class _HomeHeaderState extends State<HomeHeader> {
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+      if (mounted) setState(() {}); 
+    });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel(); 
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: <Color>[
-            AppColors.primaryColor,
-            AppColors.primaryColor,
-            AppColors.darkPrimaryColor,
-          ],
+    
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: CustomHeader(
+        isHome: widget.isHome,
+        isAthkar: widget.isAthkar,
+        mediaHeight: widget.mediaHeight,
+        title: widget.title,
+        subTitle: widget.subTitle,
+        widget: Builder(
+          builder: (context) {
+            final state = context.watch<PrayerCubit>().state;
+
+            if (state is PrayerLoading) {
+              return SizedBox(
+                height: 200.h,
+                child: const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                ),
+              );
+            } else if (state is PrayerError) {
+              return SizedBox(
+                height: 200.h,
+                child: const Center(
+                  child: Text(
+                    'حدث خطأ في تحميل مواقيت الصلاة',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              );
+            } else if (state is PrayerSuccess) {
+              return PrayerTimesCard(prayerData: state.prayerData);
+            }
+            return const SizedBox.shrink();
+          },
         ),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(48.r),
-          bottomRight: Radius.circular(48.r),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            right: -80,
-            top: -60,
-            child: Container(
-              width: 196.w,
-              height: 196.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  width: 5,
-                  color: AppColors.primaryColor.withOpacity(0.5),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            right: MediaQuery.of(context).size.width * 0.85,
-            top: MediaQuery.of(context).size.height * 0.07,
-            child: Container(
-              width: 160.w,
-              height: 160.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  width: 3,
-                  color: Colors.white.withOpacity(0.1),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 50.h, left: 20.w, right: 20.w),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.settings_outlined,
-                          color: Colors.white,
-                          size: 24.sp,
-                        ),
-                        SizedBox(width: 15.w),
-                        Icon(
-                          Icons.dark_mode_outlined,
-                          color: Colors.white,
-                          size: 24.sp,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'المصحف الشريف',
-                          style: AppStyles.font30MediumWhiteColor,
-                        ),
-                        Text(
-                          'السلام عليكم ورحمة الله',
-                          style: AppStyles.font14RegularWhiteColor,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24.h),
-                const PrayerTimesCard(),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
 }
-*/

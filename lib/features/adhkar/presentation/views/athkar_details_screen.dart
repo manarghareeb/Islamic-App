@@ -5,6 +5,7 @@ import 'package:islamic_app/core/theme/styles.dart';
 import 'package:islamic_app/core/widgets/custom_header.dart';
 import 'package:islamic_app/features/adhkar/domain/entities/adhkar_category_entity.dart';
 import 'package:islamic_app/features/adhkar/presentation/widgets/info_card.dart';
+import 'package:islamic_app/features/adhkar/presentation/widgets/repeated_count_athkar.dart';
 
 class AthkarDetailsScreen extends StatelessWidget {
   const AthkarDetailsScreen({super.key, required this.category});
@@ -87,83 +88,7 @@ class AthkarDetailsScreen extends StatelessWidget {
                                 ),
                                 SizedBox(width: 12.w),
                                 Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        item.text,
-                                        style: AppStyles.font16RegularGreyColor
-                                            .copyWith(
-                                              color: AppColors.blackColor,
-                                            ),
-                                      ),
-                                      SizedBox(height: 8.h),
-                                      /*Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.yellowColor,
-                                          borderRadius: BorderRadius.circular(
-                                            12.r,
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8.w,
-                                          vertical: 2.h,
-                                        ),
-                                        child: Text(
-                                          'رواه مسلم',
-                                          style: AppStyles.font18MediumBlackColor,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8.h,),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: AppColors.primaryColor
-                                                .withOpacity(0.12),
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            12.r,
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 8.w,
-                                          vertical: 2.h,
-                                        ),
-                                        child: Text(
-                                          'حفظ من شر اليوم',
-                                          style: AppStyles.font18MediumBlackColor,
-                                        ),
-                                      ),*/
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 16.w,
-                                          vertical: 8.h,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primaryColor,
-                                          borderRadius: BorderRadius.circular(
-                                            12.r,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.repeat,
-                                              color: Colors.white,
-                                              size: 16,
-                                            ),
-                                            SizedBox(width: 8.w),
-                                            Text(
-                                              "التكرار: ${item.count}",
-                                              style: AppStyles
-                                                  .font16RegularWhiteColor,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  child: RepeatedCountAthkar(item: item),
                                 ),
                                 IconButton(
                                   onPressed: () {},
