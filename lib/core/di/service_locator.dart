@@ -29,6 +29,14 @@ import 'package:islamic_app/features/reminders/domain/repositories/reminders_rep
 import 'package:islamic_app/features/reminders/domain/usecases/add_reminder_usecase.dart';
 import 'package:islamic_app/features/reminders/domain/usecases/update_reminder_usecase.dart';
 import 'package:islamic_app/features/reminders/presentation/cubit/reminders_cubit.dart';
+import 'package:islamic_app/features/tasbih/data/data_sources/tasbih_local_data_source.dart';
+import 'package:islamic_app/features/tasbih/data/models/tasbih_model.dart';
+import 'package:islamic_app/features/tasbih/data/repositories/tasbih_repository_impl.dart';
+import 'package:islamic_app/features/tasbih/domain/repositories/tasbih_repository.dart';
+import 'package:islamic_app/features/tasbih/domain/usecases/add_tasbih_usecase.dart';
+import 'package:islamic_app/features/tasbih/domain/usecases/get_tasbih_usecase.dart';
+import 'package:islamic_app/features/tasbih/domain/usecases/update_tasbih_usecase.dart';
+import 'package:islamic_app/features/tasbih/presentation/cubit/tasbih_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -50,6 +58,9 @@ void initServiceLocator() {
   sl.registerLazySingleton<PrayerRemoteDataSource>(
     () => PrayerRemoteDataSourceImpl(apiConsumer: sl()),
   );
+  sl.registerLazySingleton<TasbihLocalDataSource>(
+    () => TasbihLocalDataSourceImpl(sl<Box<TasbihModel>>()),
+  );
   
   /// Repositories
   sl.registerLazySingleton<QuranRepository>(
@@ -64,6 +75,9 @@ void initServiceLocator() {
   sl.registerLazySingleton<PrayerRepository>(
     () => PrayerRepositoryImpl(remoteDataSource: sl()),
   );
+  sl.registerLazySingleton<TasbihRepository>(
+    () => TasbihRepositoryImpl(localDataSource: sl()),
+  );
 
   /// UseCases
   sl.registerLazySingleton(() => GetQuransUseCase(repository: sl()));
@@ -73,6 +87,9 @@ void initServiceLocator() {
   sl.registerLazySingleton(() => UpdateReminderUseCase(repository: sl())); 
   sl.registerLazySingleton(() => GetAdhkarUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetPrayerTimesUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetAllTasbihsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => AddTasbihUseCase(repository: sl()));
+  sl.registerLazySingleton(() => UpdateTasbihUseCase(repository: sl()));
 
   /// Cubits
   sl.registerFactory(() => QuranCubit(getQuransUseCase: sl()));
@@ -85,4 +102,9 @@ void initServiceLocator() {
   );
   sl.registerFactory(() => AdhkarCubit(getAdhkarUseCase: sl()));
   sl.registerFactory(() => PrayerCubit(getPrayerTimesUseCase: sl()));
+  sl.registerFactory(() => TasbihCubit(
+    getAllTasbihs: sl(),
+    saveTasbih: sl(),
+    updateTasbih: sl(),
+  ));
 }

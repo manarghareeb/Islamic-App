@@ -21,6 +21,7 @@ import 'package:islamic_app/features/reminders/presentation/cubit/reminders_cubi
 import 'package:islamic_app/features/reminders/presentation/views/reminders_screen.dart';
 import 'package:islamic_app/features/settings/presentation/views/language_selection_screen.dart';
 import 'package:islamic_app/features/settings/presentation/views/location_permission_screen.dart';
+import 'package:islamic_app/features/tasbih/presentation/cubit/tasbih_cubit.dart';
 import 'package:islamic_app/features/tasbih/presentation/views/tasbih_screen.dart';
 
 abstract class AppRouter {
@@ -59,7 +60,7 @@ abstract class AppRouter {
               create: (context) => sl<PrayerCubit>()..fetchPrayerTimes(),
             ),
           ],
-          child: const HomeScreen()
+          child: const HomeScreen(),
         ),
       ),
       GoRoute(
@@ -90,10 +91,13 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: payerTimesScreen,
-        builder: (context, state) => BlocProvider(
-          create: (context) => sl<PrayerCubit>()..fetchPrayerTimes(),
-          child: PayerTimesScreen(prayerTimes: state.extra as PrayerTimesEntity),
-        ),
+        builder: (context, state) {
+          final prayerTimes = state.extra as PrayerTimesEntity;
+          return BlocProvider(
+            create: (context) => sl<PrayerCubit>()..fetchPrayerTimes(),
+            child: PayerTimesScreen(prayerTimes: prayerTimes),
+          );
+        },
       ),
       GoRoute(
         path: athkarScreen,
@@ -118,7 +122,10 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: tasbihScreen,
-        builder: (context, state) => const TasbihScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<TasbihCubit>()..loadTasbihs(),
+          child: const TasbihScreen(),
+        ),
       ),
     ],
   );
