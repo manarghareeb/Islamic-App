@@ -14,8 +14,8 @@ class CounterWithTitle extends StatelessWidget {
     return Column(
       children: [
         GradientIconContainer(
-          width: 48.w,
-          height: 48.h,
+          //width: 48.w,
+          //height: 48.h,
           isText: true,
           text: count,
           textStyle: AppStyles.font24MediumBlackColor,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamic_app/core/theme/colors.dart';
 import 'package:islamic_app/core/theme/styles.dart';
-import 'package:islamic_app/features/reminders/presentation/widgets/add_reminder_title_field%20.dart';
+import 'package:islamic_app/features/reminders/presentation/widgets/add_title_field%20.dart';
 import 'package:islamic_app/features/reminders/presentation/widgets/reminder_color_selector.dart';
 import 'package:islamic_app/features/reminders/presentation/widgets/reminder_dialog_buttons.dart';
 import 'package:islamic_app/features/reminders/presentation/widgets/reminder_icon_selector.dart';
@@ -69,7 +69,11 @@ class _AddReminderDialogState extends State<AddReminderDialog> {
                   style: AppStyles.font24MediumBlackColor,
                 ),
                 SizedBox(height: 25.h),
-                AddReminderTitleField(controller: titleController),
+                AddTitleField(
+                  title: "عنوان التذكير",
+                  hintText: "مثال: صلاة الضحى، قراءة ورد...",
+                  controller: titleController,
+                ),
                 SizedBox(height: 15.h),
                 ReminderTimePicker(
                   selectedTime: selectedTime,
