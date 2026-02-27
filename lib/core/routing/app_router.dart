@@ -8,7 +8,6 @@ import 'package:islamic_app/features/adhkar/presentation/views/athkar_screen.dar
 import 'package:islamic_app/features/home/presentation/views/home_screen.dart';
 import 'package:islamic_app/features/onboarding/presentation/views/onboarding_screen.dart';
 import 'package:islamic_app/features/onboarding/presentation/views/splash_screen.dart';
-import 'package:islamic_app/features/prayer_times/domain/entities/prayer_time_entity.dart';
 import 'package:islamic_app/features/prayer_times/presentation/cubit/prayer_cubit.dart';
 import 'package:islamic_app/features/prayer_times/presentation/views/payer_times_screen.dart';
 import 'package:islamic_app/features/quran/domain/entities/quran_entity.dart';
@@ -92,10 +91,9 @@ abstract class AppRouter {
       GoRoute(
         path: payerTimesScreen,
         builder: (context, state) {
-          final prayerTimes = state.extra as PrayerTimesEntity;
           return BlocProvider(
             create: (context) => sl<PrayerCubit>()..fetchPrayerTimes(),
-            child: PayerTimesScreen(prayerTimes: prayerTimes),
+            child: const PayerTimesScreen(),
           );
         },
       ),

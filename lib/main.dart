@@ -5,7 +5,6 @@ import 'package:islamic_app/core/cache/cache_helper.dart';
 import 'package:islamic_app/core/di/service_locator.dart';
 import 'package:islamic_app/core/routing/app_router.dart';
 import 'package:islamic_app/core/services/local_notifications_service.dart';
-import 'package:islamic_app/core/services/work_manager_service.dart';
 import 'package:islamic_app/features/reminders/data/models/reminder_model.dart';
 import 'package:islamic_app/features/tasbih/data/models/tasbih_model.dart';
 
@@ -22,12 +21,7 @@ void main() async {
 
   await CacheHelper.init();
   initServiceLocator();
-  
-  await Future.wait([
-    LocalNotificationsService.init(),
-    //LocalNotificationService.requestPermissions(),
-    WorkManagerService().initialize(),
-  ]);
+  await LocalNotificationsService.init();
   runApp(const MyApp());
 }
 

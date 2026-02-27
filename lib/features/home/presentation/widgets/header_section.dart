@@ -53,7 +53,7 @@ class _HomeHeaderState extends State<HomeHeader> {
       child: CustomHeader(
         isHome: widget.isHome,
         isAthkar: widget.isAthkar,
-        mediaHeight: widget.mediaHeight,
+        mediaHeight: 0.5,
         title: widget.title,
         subTitle: widget.subTitle,
         widget: Builder(

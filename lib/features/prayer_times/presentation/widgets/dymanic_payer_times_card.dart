@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamic_app/core/theme/colors.dart';
 import 'package:islamic_app/core/theme/styles.dart';
 import 'package:islamic_app/core/widgets/gradient_icon_container.dart';
+import 'package:islamic_app/features/prayer_times/presentation/cubit/prayer_cubit.dart';
 import 'package:islamic_app/features/prayer_times/presentation/views/payer_times_screen.dart';
 
 class DymanicPayerTimesCard extends StatelessWidget {
@@ -120,8 +122,10 @@ class DymanicPayerTimesCard extends StatelessWidget {
                         Transform.scale(
                           scale: 0.8,
                           child: Switch(
-                            value: true,
-                            onChanged: (val) {},
+                            value: context.watch<PrayerCubit>().prayerNotificationsStatus[prayer.name] ?? true,
+                            onChanged: (val) {
+                              context.read<PrayerCubit>().togglePrayerNotification(prayer.name, val);
+                            },
                             activeThumbColor: Colors.white,
                             activeTrackColor: isCurrent
                                 ? Colors.white.withOpacity(0.5)

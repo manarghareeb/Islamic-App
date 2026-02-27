@@ -3,15 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:islamic_app/core/theme/colors.dart';
 import 'package:islamic_app/core/widgets/custom_header.dart';
-import 'package:islamic_app/features/prayer_times/domain/entities/prayer_time_entity.dart';
 import 'package:islamic_app/features/prayer_times/presentation/cubit/prayer_cubit.dart';
 import 'package:islamic_app/features/prayer_times/presentation/cubit/prayer_state.dart';
 import 'package:islamic_app/features/prayer_times/presentation/widgets/address_and_date_card.dart';
 import 'package:islamic_app/features/prayer_times/presentation/widgets/dymanic_payer_times_card.dart';
 
 class PayerTimesScreen extends StatelessWidget {
-  const PayerTimesScreen({super.key, required this.prayerTimes});
-  final PrayerTimesEntity prayerTimes;
+  const PayerTimesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class PayerTimesScreen extends StatelessWidget {
                   CustomHeader(
                     isAthkar: false,
                     isHome: false,
-                    mediaHeight: 0.55,
+                    mediaHeight: 0.5,
                     title: 'مواقيت الصلاة',
                     subTitle: 'أوقات دقيقة حسب موقعك',
                     widget: state is PrayerLoading
