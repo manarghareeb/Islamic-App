@@ -16,55 +16,52 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> servicesList = [
+      {
+        'title': 'الأذان',
+        'subtitle': 'مواقيت الصلاة',
+        'icon': Icons.access_time,
+        'colors': false,
+        'onTap': () => GoRouter.of(context).push(AppRouter.payerTimesScreen),
+      },
+      {
+        'title': 'المصحف',
+        'subtitle': 'قراءة القرآن الكريم',
+        'icon': Icons.book,
+        'colors': true,
+        'onTap': () => GoRouter.of(context).push(AppRouter.quranScreen),
+      },
+      {
+        'title': 'التذكيرات',
+        'subtitle': 'تنبيهات يومية',
+        'icon': Icons.notifications_none,
+        'colors': false,
+        'onTap': () => GoRouter.of(context).push(AppRouter.remindersScreen),
+      },
+      {
+        'title': 'الأدعية والأذكار',
+        'subtitle': 'حصن المسلم',
+        'icon': Icons.front_hand,
+        'colors': true,
+        'onTap': () => GoRouter.of(context).push(AppRouter.athkarScreen),
+      },
+      {
+        'title': 'المساجد',
+        'subtitle': 'أقرب المساجد',
+        'icon': Icons.location_on,
+        'colors': false,
+        'onTap': () {},
+      },
+      {
+        'title': 'تعليم القرآن',
+        'subtitle': 'دروس وتلاوات',
+        'icon': Icons.headphones,
+        'colors': true,
+        'onTap': () {},
+      },
+    ];
     return BlocBuilder<PrayerCubit, PrayerState>(
       builder: (context, state) {
-        final prayerData = state is PrayerSuccess ? state.prayerData : null;
-        final List<Map<String, dynamic>> servicesList = [
-          {
-            'title': 'الأذان',
-            'subtitle': 'مواقيت الصلاة',
-            'icon': Icons.access_time,
-            'colors': false,
-            'onTap': () => GoRouter.of(
-              context,
-            ).push(AppRouter.payerTimesScreen, extra: prayerData),
-          },
-          {
-            'title': 'المصحف',
-            'subtitle': 'قراءة القرآن الكريم',
-            'icon': Icons.book,
-            'colors': true,
-            'onTap': () => GoRouter.of(context).push(AppRouter.quranScreen),
-          },
-          {
-            'title': 'التذكيرات',
-            'subtitle': 'تنبيهات يومية',
-            'icon': Icons.notifications_none,
-            'colors': false,
-            'onTap': () => GoRouter.of(context).push(AppRouter.remindersScreen),
-          },
-          {
-            'title': 'الأدعية والأذكار',
-            'subtitle': 'حصن المسلم',
-            'icon': Icons.front_hand,
-            'colors': true,
-            'onTap': () => GoRouter.of(context).push(AppRouter.athkarScreen),
-          },
-          {
-            'title': 'المساجد',
-            'subtitle': 'أقرب المساجد',
-            'icon': Icons.location_on,
-            'colors': false,
-            'onTap': () {},
-          },
-          {
-            'title': 'تعليم القرآن',
-            'subtitle': 'دروس وتلاوات',
-            'icon': Icons.headphones,
-            'colors': true,
-            'onTap': () {},
-          },
-        ];
         return Scaffold(
           backgroundColor: AppColors.whiteBackgroundColor,
           body: SingleChildScrollView(

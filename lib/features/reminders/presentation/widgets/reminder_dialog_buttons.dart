@@ -42,9 +42,12 @@ class ReminderDialogButtons extends StatelessWidget {
                 );
                 return;
               }
+              final String hour = selectedTime!.hour.toString().padLeft(2, '0');
+              final String minute = selectedTime!.minute.toString().padLeft(2, '0');
+              final String formattedTime24h = "$hour:$minute";
               final newReminder = ReminderEntity(
                 title: titleController.text,
-                time: selectedTime!.format(context),
+                time: formattedTime24h,
                 iconCode: icons[selectedIcon].codePoint,
                 gradientColor: colors[selectedColor]
                     .map((c) => c.value)
