@@ -100,7 +100,9 @@ class CustomGradientCard extends StatelessWidget {
                           Text(
                             '﴾ ${ayah.text} ﴿',
                             textAlign: TextAlign.center,
-                            style: AppStyles.font24MediumBlackColor,
+                            style: AppStyles.font24MediumBlackColor.copyWith(
+                              fontFamily: 'Amiri',
+                            ),
                           ),
                           SizedBox(height: 16.h),
                           const CustomDividerWithShadow(),
@@ -109,6 +111,7 @@ class CustomGradientCard extends StatelessWidget {
                             '${ayah.surahName} - آية ${ayah.numberInSurah}',
                             style: AppStyles.font14RegularWhiteColor.copyWith(
                               color: AppColors.greyColor,
+                              fontFamily: 'Amiri',
                             ),
                           ),
                         ],
