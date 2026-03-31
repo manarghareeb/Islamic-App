@@ -243,12 +243,12 @@ flutter build apk --release
 
 | Home Screen | Prayer Times | Quran |
 |:-----------:|:------------:|:-----:|
-| _Coming Soon_ | _Coming Soon_ | ![HomePage](https://github.com/user-attachments/assets/81e5a226-9066-4e60-8949-330295463e39)
+| ![HomePage](https://github.com/user-attachments/assets/81e5a226-9066-4e60-8949-330295463e39) | ![prayer times](https://github.com/user-attachments/assets/935cc31d-d9fd-46fc-b32d-f0b4a72491bb) | ![quran](https://github.com/user-attachments/assets/620b67d9-10a4-4ce1-8e5c-72fe02524825) |
 
 
 | Adhkar | Tasbih | Reminders |
 |:------:|:------:|:---------:|
-| _Coming Soon_ | _Coming Soon_ | _Coming Soon_ |
+| ![akhar](https://github.com/user-attachments/assets/09da9276-3290-448e-8420-56d4b3083536) | ![masbaha](https://github.com/user-attachments/assets/4a839447-0edc-40e5-af88-2cc189a2c5ac) | ![add note](https://github.com/user-attachments/assets/2fc38292-9f6b-436a-bef9-7cb7354e573a) |
 
 ---
 
