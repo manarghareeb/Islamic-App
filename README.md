@@ -1,62 +1,294 @@
-# 📖 Islamic App (Al-Muezzin)
+<div align="center">
 
-A comprehensive, beautifully designed Islamic assistant application built with Flutter. This project demonstrates high-level architecture, responsive UI, and seamless integration of local data and real-time location-based services.
+# 🕌 Islamic App
 
----
+**A comprehensive Islamic companion app built with Flutter — featuring Quran, Prayer Times, Adhkar, Tasbih, and Daily Reminders.**
 
-## 🌟 Project Overview
-The **Islamic App** is designed to provide a serene and functional experience for daily Islamic practices. It offers accurate prayer timings based on geographic location, a categorized Adhkar (supplications) library, and a sophisticated user interface that adapts to various screen sizes and orientations.
+[![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.10+-0175C2?logo=dart)](https://dart.dev)
+[![BLoC](https://img.shields.io/badge/State%20Management-BLoC-blueviolet)](https://bluelibs.com/docs/x-ui/core-concepts/state-management/bloc)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-1.0.0-orange)]()
 
-The primary goal of this project was to implement a **production-ready codebase** using **Clean Architecture** to ensure the app is scalable, testable, and maintainable.
-
----
-
-## 🛠 Tech Stack
-* **Framework:** [Flutter](https://flutter.dev/)
-* **Language:** [Dart](https://dart.dev/)
-* **State Management:** [Bloc & Cubit](https://pub.dev/packages/flutter_bloc)
-* **Navigation:** [GoRouter](https://pub.dev/packages/go_router)
-* **Dependency Injection:** [GetIt](https://pub.dev/packages/get_it)
-* **Local Database:** [Hive](https://pub.dev/packages/hive) & [SQLite](https://pub.dev/packages/sqflite)
-* **Networking:** [Dio](https://pub.dev/packages/dio)
-* **UI/UX:** [Flutter ScreenUtil](https://pub.dev/packages/flutter_screenutil) (Responsive design), [Cairo Font Family](https://fonts.google.com/specimen/Cairo)
+</div>
 
 ---
 
-## 🏗 Architecture
-The project strictly follows **Uncle Bob's Clean Architecture** principles, separated into three distinct layers:
+## 📖 Project Overview
 
-1.  **Domain Layer:** The core of the application containing **Entities**, **Use Cases**, and **Repository Interfaces**. It is completely independent of any external libraries or UI.
-2.  **Data Layer:** Contains **Models**, **Data Sources** (Remote & Local), and **Repository Implementations**. It handles data retrieval and maps it to domain entities.
-3.  **Presentation Layer:** Handles the UI logic using **Bloc/Cubit**. It utilizes the **ScreenUtil** package to maintain a consistent UI across mobile and tablet devices.
+**Islamic App** is a beautifully designed, all-in-one Islamic mobile application built with Flutter. It serves as a daily spiritual companion for Muslims — offering accurate GPS-based prayer times, full Quran browsing, Adhkar (supplications), a digital Tasbih counter, and customizable daily reminders, all wrapped in an elegant RTL-compatible Arabic UI.
+
+The app is built following **Clean Architecture** principles with a feature-first folder structure, making it highly maintainable and scalable.
 
 ---
 
-## 🚀 Features
-* **📍 Location-Aware Prayer Times:** Automatically calculates prayer timings based on user coordinates using the `geolocator` package.
-* **📿 Categorized Adhkar:** A rich collection of supplications (Morning, Evening, After Prayer) retrieved from a local JSON/SQLite database.
-* **🌓 Responsive Design:** Full support for **Portrait and Landscape** orientations with adaptive scaling for tablets.
-* **🔔 Local Notifications:** Scheduled alerts for prayer times and daily reminders.
-* **🎨 Custom Theming:** A centralized styling system using the **Cairo** font family for a professional aesthetic.
-* **🧩 Modular Widgets:** Reusable UI components and specialized dialogs to ensure DRY (Don't Repeat Yourself) principles.
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|---|---|
+| **Framework** | Flutter (Dart 3.10+) |
+| **State Management** | Flutter BLoC / Cubit |
+| **Navigation** | GoRouter |
+| **Networking** | Dio + REST APIs |
+| **Local Storage** | Hive (NoSQL) + SharedPreferences |
+| **Notifications** | flutter_local_notifications |
+| **Location** | Geolocator |
+| **Timezone** | flutter_timezone + timezone |
+| **DI / Service Locator** | get_it |
+| **Functional Programming** | dartz (Either, Failures) |
+| **UI Utilities** | flutter_screenutil, flutter_svg, smooth_page_indicator |
+| **Internationalization** | intl |
+| **Code Generation** | hive_generator + build_runner |
+
+---
+
+## 🏗️ Architecture
+
+The project strictly follows **Clean Architecture** with a **feature-first** modular structure. Each feature is self-contained with its own Data, Domain, and Presentation layers.
+
+```
+Feature
+├── data/
+│   ├── data_sources/     # Remote & local data sources
+│   ├── models/           # JSON-serializable models (extends entities)
+│   └── repositories/     # Repository implementations
+├── domain/
+│   ├── entities/         # Pure business objects
+│   ├── repositories/     # Abstract repository interfaces
+│   └── usecases/         # Single-responsibility use cases
+└── presentation/
+    ├── cubit/            # BLoC Cubits (states & logic)
+    ├── views/            # Full screens
+    └── widgets/          # Reusable UI components
+```
+
+**Key architectural decisions:**
+
+- **dartz `Either<Failure, T>`** is used across all use cases for type-safe error handling — no exceptions bubble up to the UI layer.
+- **GetIt** acts as the service locator, wiring together all dependencies in `service_locator.dart`.
+- **GoRouter** handles all navigation declaratively, with route constants defined in `AppRouter`.
+- **Hive** provides fast, offline-first persistence for Tasbih counters and Reminders.
+- The **ApiConsumer** abstraction (`DioConsumer`) keeps networking decoupled from business logic.
+
+---
+
+## ✨ Features
+
+### 🕋 Home Dashboard
+- Greeting header with a dynamic "Ayah of the Day" card
+- Service grid linking to all major features (Prayer Times, Quran, Adhkar, Tasbih, Reminders)
+- Live prayer countdown visible directly on the home screen
+
+### 🕐 Prayer Times
+- Fetches accurate daily prayer times using the **Aladhan API** based on the user's real GPS coordinates
+- Displays Fajr, Sunrise, Dhuhr, Asr, Maghrib, and Isha with icons
+- Shows both **Gregorian and Hijri dates** including the Arabic weekday
+- Toggle notifications on/off per-prayer — settings are persisted across sessions
+- Schedules exact timezone-aware local notifications for each enabled prayer
+
+### 📗 Quran
+- Full Quran browsing via the **AlQuran Cloud API**
+- Browse all Surahs and read Ayahs within each Surah
+- Random Ayah of the Day displayed on the home screen
+
+### 📿 Adhkar (Supplications)
+- Categorized Adhkar loaded from a local JSON asset (`adhkar.json`) — works fully offline
+- Interactive tap-to-count repetition system with repeat tracking per dhikr
+- Clean card-based UI with category browsing and detail screens
+
+### 📿 Tasbih Counter
+- Digital Tasbih with customizable target count
+- Add, rename, and manage multiple Tasbih sessions
+- Data persisted via **Hive** — your count survives app restarts
+- Smooth animated counter with a large tap-friendly button
+
+### 🔔 Reminders
+- Create custom daily reminders with a title and time picker
+- Enable/disable individual reminders with a toggle
+- Backed by **Hive** for offline storage and **flutter_local_notifications** for delivery
+
+### 🚀 Onboarding & Splash
+- Animated splash screen on first launch
+- Multi-page onboarding flow with smooth page indicator
+- "Skip" and "Next" navigation controls; onboarding is shown only once via SharedPreferences
 
 ---
 
 ## 🧪 Testing
-The project is built with testability in mind:
-* **Unit Tests:** Implemented for Use Cases and Repositories to ensure business logic remains intact.
-* **Bloc Tests:** Verification of state transitions for various user interactions.
+
+The project uses Flutter's built-in testing framework. Dev dependencies include:
+
+```yaml
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.8
+  hive_generator: ^2.0.1
+```
+
+To run all tests:
+
+```bash
+flutter test
+```
+
+> Note: Unit tests for use cases and repository implementations are the recommended next step to increase coverage. The Clean Architecture structure makes each layer independently testable without UI or network dependencies.
 
 ---
 
 ## 📁 Folder Structure
-```text
-lib/
-├── core/                # Global utilities, themes, and network configs
-├── features/            # Feature-based modularity
-│   ├── adhkar/          # Supplications feature
-│   │   ├── data/        # Models, Data Sources, Repositories
-│   │   ├── domain/      # Entities, Use Cases
-│   │   └── presentation/# Blocs, Widgets, Screens
-│   ├── prayer_times/    # Location and timing logic
-└── main.dart            # App entry point
+
+```
+islamic_app/
+├── lib/
+│   ├── core/
+│   │   ├── api/                  # ApiConsumer, DioConsumer, interceptors, endpoints
+│   │   ├── cache/                # CacheHelper (SharedPreferences wrapper)
+│   │   ├── di/                   # service_locator.dart (GetIt setup)
+│   │   ├── error/                # Failure classes, Exception handlers, ErrorModel
+│   │   ├── routing/              # AppRouter (GoRouter config & route constants)
+│   │   ├── services/             # LocalNotificationsService
+│   │   ├── theme/                # AppColors, AppStyles, AppImages
+│   │   └── widgets/              # Shared widgets (AppBar, GradientCard, Header, etc.)
+│   │
+│   ├── features/
+│   │   ├── onboarding/           # Splash & Onboarding screens
+│   │   ├── home/                 # Home dashboard
+│   │   ├── prayer_times/         # Prayer times (remote API + notifications)
+│   │   ├── quran/                # Quran browser (remote API)
+│   │   ├── adhkar/               # Adhkar/Supplications (local JSON)
+│   │   ├── tasbih/               # Tasbih counter (Hive persistence)
+│   │   └── reminders/            # Daily reminders (Hive + notifications)
+│   │
+│   └── main.dart                 # App entry point (Hive init, DI, notifications)
+│
+├── assets/
+│   ├── images/                   # Splash & UI images
+│   ├── fonts/cairo/              # Cairo font family (Regular, Medium, SemiBold, Bold)
+│   └── json/adhkar.json          # Offline Adhkar data
+│
+├── android/                      # Android native project
+├── ios/                          # iOS native project
+├── pubspec.yaml                  # Dependencies & assets manifest
+└── README.md
+```
+
+---
+
+## 🚀 How to Run the Project
+
+### Prerequisites
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) `>=3.10.0`
+- Dart `>=3.10.0`
+- Android Studio / VS Code with Flutter extension
+- A connected device or emulator
+
+### Steps
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/your-username/islamic_app.git
+cd islamic_app
+```
+
+**2. Install dependencies**
+
+```bash
+flutter pub get
+```
+
+**3. Generate Hive adapters** (if modifying models)
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+**4. Run the app**
+
+```bash
+flutter run
+```
+
+**5. Build for release (Android)**
+
+```bash
+flutter build apk --release
+```
+
+> **Note:** The app requires location permissions at runtime to fetch accurate prayer times. Make sure to grant location access when prompted.
+
+---
+
+## 🔮 Future Improvements
+
+- [ ] **Qibla Direction** — Compass-based Qibla finder using device sensors
+- [ ] **Nearest Mosques Map** — Integrate Google Maps to find nearby mosques
+- [ ] **Quran Audio** — Audio recitation playback for each Surah/Ayah
+- [ ] **Quran Bookmarks & Search** — Save favorite Ayahs and search by keyword
+- [ ] **Dark Mode** — Full dark theme support with theme-switching
+- [ ] **Localization (i18n)** — Multi-language support (English, Arabic, Urdu, etc.)
+- [ ] **Hijri Calendar** — Full interactive Hijri calendar view
+- [ ] **Widget Support** — Home screen widget showing the next prayer time
+- [ ] **Unit & Widget Tests** — Comprehensive test coverage for use cases and UI
+- [ ] **CI/CD Pipeline** — Automated testing and deployment via GitHub Actions
+
+---
+
+## 📸 Screenshots
+
+> Add your screenshots here to showcase the app's UI.
+
+| Home Screen | Prayer Times | Quran |
+|:-----------:|:------------:|:-----:|
+| _Coming Soon_ | _Coming Soon_ | ![HomePage](https://github.com/user-attachments/assets/81e5a226-9066-4e60-8949-330295463e39)
+
+
+| Adhkar | Tasbih | Reminders |
+|:------:|:------:|:---------:|
+| _Coming Soon_ | _Coming Soon_ | _Coming Soon_ |
+
+---
+
+## 🔗 APIs Used
+
+| API | Purpose | Docs |
+|-----|---------|------|
+| [AlQuran Cloud](https://alquran.cloud/api) | Fetch Surahs and Ayahs | `https://api.alquran.cloud/v1/` |
+| [Aladhan](https://aladhan.com/prayer-times-api) | GPS-based prayer times & Hijri date | `https://api.aladhan.com/v1/` |
+
+---
+
+## 🤝 Contributing
+
+Contributions are very welcome! Here's how to get started:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m 'feat: add amazing feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Open a Pull Request
+
+Please follow the existing code style and Clean Architecture patterns when contributing.
+
+---
+
+## 📬 Social Links
+
+<div align="center">
+
+[![GitHub](https://img.shields.io/badge/GitHub-@manarghareeb-181717?logo=github)](https://github.com/manarghareeb)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?logo=linkedin)](https://linkedin.com/in/manar-ghareeb)
+[![Email](https://img.shields.io/badge/Email-Contact%20Me-D14836?logo=gmail)](mailto:manarghareeb1973@email.com)
+
+</div>
+
+---
+
+<div align="center">
+
+Made with ❤️ and Flutter · بسم الله الرحمن الرحيم
+
+</div>
